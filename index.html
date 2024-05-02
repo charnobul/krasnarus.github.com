@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Мой Кликер</title>
+    <style>
+        #counter {
+            font-size: 2em;
+            margin: 20px;
+        }
+        #clicker-button {
+            padding: 10px 20px;
+            font-size: 2em;
+            margin: 20px;
+            background: url('https://e.radikal.host/2024/05/02/82590444_2001_1_grivna.png') no-repeat;
+            border: none;
+            width: 300px;  /* Увеличьте ширину кнопки */
+            height: 300px; /* Увеличьте высоту кнопки */
+            background-size: cover; /* Это убедится, что изображение будет масштабировано, чтобы заполнить кнопку */
+        }
+        #reward-button {
+            padding: 10px 20px;
+            font-size: 2em;
+            margin: 20px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="counter">Баланс = 0 гривен</div>
+    <button id="clicker-button"></button>
+    <br>
+    <button id="reward-button">Ежедневная награда</button>
+
+    <script>
+        var count = parseFloat(localStorage.getItem('balance')) || 0;
+        var lastRewardTime = new Date(localStorage.getItem('lastRewardTime')) || null;
+        var counterDiv = document.getElementById('counter');
+        var clickerButton = document.getElementById('clicker-button');
+        var rewardButton = document.getElementById('reward-button');
+
+        counterDiv.innerHTML = 'Баланс = ' + count.toFixed(3) + ' гривен';
+
+        clickerButton.onclick = function() {
+            count += 0.001;
+            counterDiv.innerHTML = 'Баланс = ' + count.toFixed(3) + ' гривен';
+            localStorage.setItem('balance', count);
+        }
+
+        rewardButton.onclick = function() {
+            var now = new Date();
+            if (lastRewardTime && now - lastRewardTime < 24*60*60*1000) {
+                alert('Вы уже получили свою ежедневную награду! Попробуйте снова через 24 часа.');
+            } else {
+                count += 1;
+                counterDiv.innerHTML = 'Баланс = ' + count.toFixed(3) + ' гривен';
+                alert('Вы получили 1 гривну на баланс. Отлично!');
+                lastRewardTime = now;
+                localStorage.setItem('balance', count);
+                localStorage.setItem('lastRewardTime', lastRewardTime);
+            }
+        }
+    </script>
+</body>
+</html>
